@@ -2,12 +2,42 @@
 <style>
 body {
 font-family:Arial;
-width:95%;
-height:290px;
+width:98%;
+margin:0px;
+padding:0px;
+height:300px;
 border: 2px solid gray;
+}
+
+#mapCont, #dashCont, #textCont {
+width:33%;
+height:296px;
+box-sizing: border-box;
+margin:0px;
+padding:4px;
+float:left;
+background-color:#EEEEEE;
+border: 1px solid red;
+
+}
+
+#map {
+width:100%;
+max-width:288px;
 }
 </style>
 <body>
-Hello world.
+<div id='mapCont'>
+<img id='map' src='img/map.png'>
+</div>
+<div id='dashCont'>
+<button>LAUNCH VM</button>
+</div>
+<div id='textCont'>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</div>
+<script>
+alert(navigator.userAgent);
+</script>
 </body>
 </html>
