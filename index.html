@@ -52,7 +52,7 @@ margin-top:4px;
 	color:white;
 	background-color:#0093c9;
 	text-align:center;
-	font-size:0.9em;
+	font-size:1em;
 	padding:4px;
 	
 }
@@ -104,7 +104,7 @@ border-right:1px solid #eeeeee;
 
 
 /*-----text-----*/
-#textCont {
+#textCont p{
 	font-size:0.9em;
 
 }
@@ -118,10 +118,11 @@ border-right:1px solid #eeeeee;
 	margin:0px;
 	padding:4px;
 	border:0px;
+	box-sizing:border-box;
 	
 	outline:none;
 	display:none;
-	font-size:1em;
+	
 }
 
 #tab:hover {
@@ -185,9 +186,9 @@ border-right:1px solid #eeeeee;
 	<p>Third paragraph to see how much space we have left on the page.</p>
 </div>
 
-<button id='tab' onclick="tab()">
+<div id='tab' onclick="tab()">
 ...
-</button>
+</div>
 </div>
 <script>
 
