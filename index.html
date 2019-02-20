@@ -1,52 +1,243 @@
 <html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <style>
+
+/*----setup-----*/
+html {
+
+}
 body {
-font-family:Arial;
-width:98%;
-margin:0px;
-padding:0px;
-height:300px;
-border: 2px solid gray;
+	font-family: Open Sans,sans-serif;
+	width:98%;
+	height:300px;
+	margin:0px;
+	padding:0px;
+	height:300px;
+	border: 2px solid gray;
+	
 }
 
 #mapCont, #dashCont, #textCont {
-width:33%;
-height:296px;
-box-sizing: border-box;
-margin:0px;
-padding:4px;
-float:left;
-background-color:#EEEEEE;
-border: 1px solid red;
-
+	width:33%;
+	height:296px;
+	box-sizing: border-box;
+	margin:0px;
+	padding:4px;
+	float:left;
+	border: 1px solid red;
+	
 }
+
+/*-----map------*/
 
 #map {
-width:100%;
-max-width:288px;
+	width:100%;
+	max-width:288px;
 }
+
+/*-----dash------*/
+#warning {
+width:100%;
+padding:2px;
+box-sizing:border-box;
+background-color:yellow;
+font-size:0.9em;
+text-align:center;
+}
+
+#warning p {
+	margin:4px;
+}
+
+
+#launch {
+	text-align:center;
+}
+
+#launchB {
+width:70%;
+min-width:180px;
+padding:8px;
+background-color:#82bd41;
+color:white;
+border: 0px;
+border-radius:4px;
+}
+
+#launchB:hover {
+background-color:#7bb33e;
+}
+
+/*-----text-----*/
+#textCont {
+	font-size:0.9em;
+
+}
+
+#tab {
+position:absolute;
+right:2%;
+background-color:#82bd41;
+margin:0px;
+padding:4px;
+border:0px;
+border-radius:0px 0px 4px 4px;
+display:none;
+}
+
+@media only screen and (max-width: 768px) {
+  div#textCont {
+    
+	width:49%;
+  }
+  
+  div#mapCont{
+    width:49%;
+  }
+  
+  div#dashCont {
+    width:49%;
+  }
+  
+  #tab {
+  display:block;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+	#mapCont, #dashCont, #textCont {
+	
+	display:block !important;
+	}
+}
+
 </style>
+</head>
 <body>
+<div style="overflow:hidden; width:100%; height:300px;">
 <div id='mapCont'>
-<img id='map' src='img/map.png'>
+	<img id='map' src='img/map.png'>
 </div>
+
 <div id='dashCont'>
-<button>LAUNCH VM</button>
+	<p id="launch"><button id='launchB'>OPEN VM IN NEW TAB</button></p>
+	<!--<button id='getLink'>GET LINK</button>-->
+	<p>Status: <span id="status">running</span></p>
+	<p>Time remaining: <span id="time">2hr 30min</span></p>
+	<p>Data center: <span id="dataCenter">EMEA</span></p> 
+	
+	<div id="warning">
+	</div>
 </div>
+
+
 <div id='textCont'>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+</div>
+
+<button id='tab' onclick="tab()">
+...
+</button>
 </div>
 <script>
-//alert(navigator.userAgent);
 
+// variables from VM
+
+
+//examples
+//var status=0; //not launched
+//var status=1; //running
+var status=2; //paused
+
+var time=107;
+var dataCenter="EMEA";
+
+// initialise display variable
+var dashShow=true;
+
+
+
+// detect mobile bowser
+if (detectmob()) {
+
+	$('#warning').css('display','block');
+	$('#warning').html("<p>WARNING</p><p>You may be using a mobile device. Please log in to Talend Academy on a desktop to launch the VM.");
+	disableButton();
+} else {
+
+	$('#warning').css('display','block');
+	$('#warning').html("<p>WARNING</p><p>You may be using a mobile device. Please log in to Talend Academy on a desktop to launch the VM.</p>");
+
+}
+
+// sets dash
+dash(status,time,dataCenter);
+
+
+//FUNCTIONS//
+
+// detect mobile browser
 function detectmob() {
      return !!navigator.userAgent.match(/iPad|iPhone|Android|BlackBerry|Windows Phone|webOS/i);
 	 
 }
 
+function dash(s,t,dc) {
+	
+	var statusT;
+	switch (s){
+		case "0":
+			statusT="running";
+			break;
+		case "1":
+			statusT="stopped";
+			break;
+		case "2":
+			statusT="paused";
+			break;
+		default:
+			statusT="error";
+			
+	}
+	$('#status').html(statusT);
+	$('#time').html(t + ' min');
+	$('#dataCenter').html(dc);
+	
+}
 
-//detectmob();
-if (detectmob()) {alert(detectmob() + " yes")} else {alert(detectmob() + " no")}
+// disables the VM button
+function disableButton() {
+	$('#launchB').css({
+		'background-color':'#82bd4166',
+		'pointer-events': 'none'
+	})
+}
+
+//enables the VM button
+function enableButton() {
+	$('#launchB').css({
+		'background-color':'#82bd41',
+		'pointer-events': 'auto'
+	})
+}
+
+//shows the tab on narrow screens
+function tab() {
+	if(dashShow==true) {
+		$('#dashCont').css('display','none');
+		$('#textCont').css('display','block');
+		dashShow=false;
+	
+	}
+	else {
+		$('#dashCont').css('display','block');
+		$('#textCont').css('display','none');
+		dashShow=true;
+	}
+}
+
 </script>
 </body>
 </html>
